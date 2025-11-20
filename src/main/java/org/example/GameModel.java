@@ -6,21 +6,24 @@ import java.util.Random;
 
 public class GameModel {
 
-    public enum Mode { LOCAL, ONLINE, AI } // 게임 모드 정의
+    public enum Mode { LOCAL, ONLINE, AI }
+    // 난이도 Enum 추가
+    public enum Difficulty { EASY, MEDIUM, HARD }
 
     private int[][] board;
     private int currentTurn;
     private final int SIZE = 8;
     private boolean isGameOver;
     private Mode gameMode;
-    private int aiColor; // AI의 돌 색상
+    private int aiColor;
+    private Difficulty aiDifficulty; // 난이도 저장 변수
 
-    // 8방향 벡터
     private final int[] DY = {-1, 1, 0, 0, -1, -1, 1, 1};
     private final int[] DX = {0, 0, -1, 1, -1, 1, -1, 1};
 
     public GameModel() {
         gameMode = Mode.LOCAL;
+        aiDifficulty = Difficulty.MEDIUM; // 기본값
         initializeBoard();
     }
 
@@ -33,7 +36,7 @@ public class GameModel {
 
         if (gameMode == Mode.AI) {
             Random random = new Random();
-            aiColor = random.nextBoolean() ? 1 : 2; // AI 색상 랜덤 지정
+            aiColor = random.nextBoolean() ? 1 : 2;
         } else {
             aiColor = 0;
         }
@@ -88,7 +91,6 @@ public class GameModel {
 
     public List<int[]> getValidMoves() {
         List<int[]> validMoves = new ArrayList<>();
-
         for (int y = 0; y < SIZE; y++) {
             for (int x = 0; x < SIZE; x++) {
                 if (board[y][x] == 0) {
@@ -133,5 +135,10 @@ public class GameModel {
     public void setGameMode(Mode mode) { this.gameMode = mode; }
     public boolean isAIMode() { return gameMode == Mode.AI; }
     public boolean isOnlineMode() { return gameMode == Mode.ONLINE; }
+
     public int getAIColor() { return aiColor; }
+
+    // 난이도 관련 메소드 추가
+    public void setAIDifficulty(Difficulty difficulty) { this.aiDifficulty = difficulty; }
+    public Difficulty getAIDifficulty() { return this.aiDifficulty; }
 }
